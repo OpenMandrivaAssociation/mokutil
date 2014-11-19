@@ -1,5 +1,5 @@
 Name:           mokutil
-Version:        0.2.0
+Version:        0.3.0
 Release:        1
 Summary:        Utility for managing SecureBoot/MOK keys
 Group:          System/Kernel and hardware
@@ -9,6 +9,10 @@ Source0:        https://github.com/lcp/mokutil/archive/%{version}.tar.gz
 
 BuildRequires: pkgconfig(efivar) >= 0.12
 BuildRequires: openssl-devel
+
+# At the moment, only x86_64 is supported
+# TODO: Find out why i586 fails
+ExclusiveArch: x86_64
 
 %description
 Utility for managing the "Machine's Owner Keys" list.
