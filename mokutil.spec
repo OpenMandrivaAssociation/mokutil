@@ -1,6 +1,6 @@
 Name:           mokutil
 Version:        0.3.0
-Release:        2
+Release:        3
 Summary:        Utility for managing SecureBoot/MOK keys
 Group:          System/Kernel and hardware
 License:        BSD
@@ -11,6 +11,7 @@ Patch1:         mokutil-0.3.0-32bit-signed-comparison.patch
 
 BuildRequires: pkgconfig(efivar) >= 0.12
 BuildRequires: openssl-devel
+Requires:      %{mklibname efivar 0} >= 0.12
 
 %description
 Utility for managing the "Machine's Owner Keys" list.
