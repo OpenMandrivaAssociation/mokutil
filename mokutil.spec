@@ -18,7 +18,7 @@ Utility for managing the "Machine's Owner Keys" list.
 
 %prep
 %setup -q
-%apply_patches
+%autopatch -p1
 
 %build
 ./autogen.sh
