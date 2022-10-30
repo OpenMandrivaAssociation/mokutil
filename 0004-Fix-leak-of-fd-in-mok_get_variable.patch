@@ -1,0 +1,70 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Robbie Harwood <rharwood@redhat.com>
+Date: Thu, 2 Jun 2022 13:00:22 -0400
+Subject: [PATCH] Fix leak of fd in mok_get_variable()
+
+On success, it was never closed.  Refactor the code to use a single
+egress path so its closure is clear.
+
+Signed-off-by: Robbie Harwood <rharwood@redhat.com>
+(cherry picked from commit e498f6460ff5aea6a7cd61a33087d03e88a2f52a)
+---
+ src/util.c | 24 +++++++++++++-----------
+ 1 file changed, 13 insertions(+), 11 deletions(-)
+
+diff --git a/src/util.c b/src/util.c
+index 6cd0302..f7fc033 100644
+--- a/src/util.c
++++ b/src/util.c
+@@ -57,22 +57,21 @@ mok_get_variable(const char *name, uint8_t **datap, size_t *data_sizep)
+ 		return fd;
+ 
+ 	rc = fstat(fd, &sb);
+-	if (rc < 0) {
+-err_close:
+-		close(fd);
+-		return rc;
+-	}
++	if (rc < 0)
++		goto done;
+ 
+ 	if (sb.st_size == 0) {
+ 		errno = ENOENT;
+ 		rc = -1;
+-		goto err_close;
++		goto done;
+ 	}
+ 
+ 	bufsz = sb.st_size;
+ 	buf = calloc(1, bufsz);
+-	if (!buf)
+-		goto err_close;
++	if (!buf) {
++		rc = -1;
++		goto done;
++	}
+ 
+ 	while (pos < bufsz) {
+ 		ssz = read(fd, &buf[pos], bufsz - pos);
+@@ -82,15 +81,18 @@ err_close:
+ 			    errno == EINTR)
+ 				continue;
+ 			free(buf);
+-			goto err_close;
++			rc = -1;
++			goto done;
+ 		}
+ 
+ 		pos += ssz;
+ 	}
+ 	*datap = buf;
+ 	*data_sizep = pos;
+-
+-	return 0;
++	rc = 0;
++done:
++	close(fd);
++	return rc;
+ }
+ 
+ MokListNode*

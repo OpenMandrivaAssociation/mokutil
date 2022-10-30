@@ -1,34 +1,38 @@
-Name:           mokutil
-Version:        0.3.0
-Release:        4
-Summary:        Utility for managing SecureBoot/MOK keys
-Group:          System/Kernel and hardware
-License:        BSD
-URL:            https://github.com/lcp/mokutil
-Source0:        https://github.com/lcp/mokutil/archive/%{version}.tar.gz
-Patch0:         mokutil-0.3.0-buffer-overflow.patch
-Patch1:         mokutil-0.3.0-32bit-signed-comparison.patch
-
-BuildRequires: pkgconfig(efivar) >= 0.12
-BuildRequires: openssl-devel
-Requires:      %{mklibname efivar 0} >= 0.12
+Summary:	Utility for managing SecureBoot/MOK keys
+Name:		mokutil
+Version:	0.6.0
+Release:	1
+Group:		System/Kernel and hardware
+License:	BSD
+URL:		https://github.com/lcp/mokutil
+Source0:	https://github.com/lcp/mokutil/archive/%{name}-%{version}.tar.gz
+Patch1:		0001-Show-usage-instead-of-aborting-on-bad-flags.patch
+Patch2:		0002-mokutil-bugfix-del-unused-opt-s.patch
+Patch3:		0003-Fix-leak-of-list-in-delete_data_from_req_var.patch
+Patch4:		0004-Fix-leak-of-fd-in-mok_get_variable.patch
+BuildRequires:	pkgconfig(efivar) >= 0.12
+BuildRequires:	pkgconfig(openssl)
+BuildRequires:	pkgconfig(libkeyutils)
+BuildRequires:	gnu-efi
+BuildRequires:	pkgconfig(bash-completion)
 
 %description
 Utility for managing the "Machine's Owner Keys" list.
 
 %prep
-%setup -q
-%autopatch -p1
+%autosetup -p1
 
 %build
 ./autogen.sh
 %configure
-%make
+%make_build
 
 %install
-rm -rf $RPM_BUILD_ROOT
-make PREFIX=%{_prefix} LIBDIR=%{_libdir} DESTDIR=%{buildroot} install
+%make_install
 
 %files
-/usr/bin/mokutil
-/usr/share/man/man1/mokutil.1.xz
+%license COPYING
+%doc README
+%{_bindir}/mokutil
+%doc %{_mandir}/man1/*
+%{_datadir}/bash-completion/completions/mokutil

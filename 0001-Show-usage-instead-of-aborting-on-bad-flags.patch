@@ -1,0 +1,31 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Robbie Harwood <rharwood@redhat.com>
+Date: Tue, 17 May 2022 11:23:28 -0400
+Subject: [PATCH] Show usage instead of aborting on bad flags
+
+Aborting here just confuses users and is sufficiently unexpected to
+cause the filing of bugs.
+
+Related: https://bugzilla.redhat.com/show_bug.cgi?id=2087066
+Signed-off-by: Robbie Harwood <rharwood@redhat.com>
+(cherry picked from commit 82694cb1ce3b29c3705c25ae4cea3d07fe57b558)
+---
+ src/mokutil.c | 3 +--
+ 1 file changed, 1 insertion(+), 2 deletions(-)
+
+diff --git a/src/mokutil.c b/src/mokutil.c
+index 5d725c9..e8228af 100644
+--- a/src/mokutil.c
++++ b/src/mokutil.c
+@@ -2087,10 +2087,9 @@ main (int argc, char *argv[])
+ 			goto out;
+ 		case 'h':
+ 		case '?':
++		default:
+ 			command |= HELP;
+ 			break;
+-		default:
+-			abort ();
+ 		}
+ 	}
+ 

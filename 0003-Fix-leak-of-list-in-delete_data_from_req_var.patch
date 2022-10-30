@@ -1,0 +1,28 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: Robbie Harwood <rharwood@redhat.com>
+Date: Thu, 2 Jun 2022 12:56:31 -0400
+Subject: [PATCH] Fix leak of list in delete_data_from_req_var()
+
+Signed-off-by: Robbie Harwood <rharwood@redhat.com>
+(cherry picked from commit d978c18f61b877afaab45a82d260b525423b8248)
+---
+ src/util.c | 6 ++++--
+ 1 file changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/src/util.c b/src/util.c
+index 621869f..6cd0302 100644
+--- a/src/util.c
++++ b/src/util.c
+@@ -295,8 +295,10 @@ delete_data_from_req_var (const MokRequest req, const efi_guid_t *type,
+ 	}
+ 
+ 	/* the key or hash is not in this list */
+-	if (start == NULL)
+-		return 0;
++	if (start == NULL) {
++		ret = 0;
++		goto done;
++	}
+ 
+ 	/* all keys are removed */
+ 	if (total == 0) {

@@ -1,0 +1,26 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: gaoyusong <gaoyusong2@huawei.com>
+Date: Mon, 30 May 2022 17:54:47 +0800
+Subject: [PATCH] mokutil bugfix: del unused opt "-s"
+
+The -s option can cause unexcepted result.
+
+Signed-off-by: gaoyusong <gaoyusong2@huawei.com>
+(cherry picked from commit 04791c29e198b18808bca519267e31c8d3786a08)
+---
+ src/mokutil.c | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/src/mokutil.c b/src/mokutil.c
+index e8228af..6982ade 100644
+--- a/src/mokutil.c
++++ b/src/mokutil.c
+@@ -1851,7 +1851,7 @@ main (int argc, char *argv[])
+ 		};
+ 
+ 		int option_index = 0;
+-		c = getopt_long (argc, argv, "cd:f:g::hi:lmpst:xDNPXv",
++		c = getopt_long (argc, argv, "cd:f:g::hi:lmpt:xDNPXv",
+ 				 long_options, &option_index);
+ 
+ 		if (c == -1)
