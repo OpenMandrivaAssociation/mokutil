@@ -1,23 +1,25 @@
 Summary:	Utility for managing SecureBoot/MOK keys
 Name:		mokutil
-Version:	0.6.0
-Release:	2
+Version:	0.7.2
+Release:	1
 Group:		System/Kernel and hardware
-License:	BSD
+License:	GPL-3.0-only
 URL:		https://github.com/lcp/mokutil
-Source0:	https://github.com/lcp/mokutil/archive/%{name}-%{version}.tar.gz
-Patch1:		0001-Show-usage-instead-of-aborting-on-bad-flags.patch
-Patch2:		0002-mokutil-bugfix-del-unused-opt-s.patch
-Patch3:		0003-Fix-leak-of-list-in-delete_data_from_req_var.patch
-Patch4:		0004-Fix-leak-of-fd-in-mok_get_variable.patch
-BuildRequires:	pkgconfig(efivar) >= 0.12
-BuildRequires:	pkgconfig(openssl)
-BuildRequires:	pkgconfig(libkeyutils)
+Source0:	https://github.com/lcp/mokutil/archive/%{version}/%{name}-%{version}.tar.gz
+BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	gnu-efi
+BuildRequires:	make
+BuildRequires:	pkgconfig
 BuildRequires:	pkgconfig(bash-completion)
+BuildRequires:	pkgconfig(efivar) >= 31
+BuildRequires:	pkgconfig(libkeyutils)
+BuildRequires:	pkgconfig(libxcrypt)
+BuildRequires:	pkgconfig(openssl)
 
 %description
-Utility for managing the "Machine's Owner Keys" list.
+%{name} is a utility to manage machine owner keys (MOK) stored
+in the database of shim.
 
 %prep
 %autosetup -p1
@@ -31,8 +33,8 @@ Utility for managing the "Machine's Owner Keys" list.
 %make_install
 
 %files
-%license COPYING
 %doc README
+%license COPYING
 %{_bindir}/mokutil
-%doc %{_mandir}/man1/*
 %{_datadir}/bash-completion/completions/mokutil
+%{_mandir}/man1/*
