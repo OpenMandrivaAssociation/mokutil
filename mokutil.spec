@@ -6,6 +6,8 @@ Group:		System/Kernel and hardware
 License:	GPL-3.0-only
 URL:		https://github.com/lcp/mokutil
 Source0:	https://github.com/lcp/mokutil/archive/%{version}/%{name}-%{version}.tar.gz
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	gnu-efi
