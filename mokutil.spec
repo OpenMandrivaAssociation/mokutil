@@ -1,7 +1,7 @@
 Summary:	Utility for managing SecureBoot/MOK keys
 Name:		mokutil
 Version:	0.7.2
-Release:	1
+Release:	2
 Group:		System/Kernel and hardware
 License:	GPL-3.0-only
 URL:		https://github.com/lcp/mokutil
